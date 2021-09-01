@@ -14,7 +14,7 @@ class BirdsController < ApplicationController
 
   # GET /birds/:id
   def show
-    bird = Bird.find_by(id: params[:id])
+    bird = find_bird
     if bird
       render json: bird
     else
@@ -24,7 +24,7 @@ class BirdsController < ApplicationController
 
   # PATCH /birds/:id
   def update
-    bird = Bird.find_by(id: params[:id])
+    bird = find_bird
     if bird
       bird.update(bird_params)
       render json: bird
@@ -43,10 +43,9 @@ class BirdsController < ApplicationController
       render json: { error: "Bird not found" }, status: :not_found
     end
   end
-
   # DELETE /birds/:id
   def destroy
-    bird = Bird.find_by(id: params[:id])
+    bird = find_bird
     if bird
       bird.destroy
       head :no_content
@@ -59,6 +58,10 @@ class BirdsController < ApplicationController
 
   def bird_params
     params.permit(:name, :species, :likes)
+  end
+   
+  def find_bird
+    Bird.find_by(params[:id])
   end
 
 end
